@@ -16,7 +16,7 @@ export default {
   outline: none;
   border: none;
   color: white;
-  background-color: #4caf50;
+  background-color: #3e9141;
   cursor: pointer;
   border-radius: 0.5rem;
   margin-bottom: 0.5em;
@@ -25,7 +25,7 @@ export default {
   margin-right: 1rem;
 
   &:hover {
-    opacity: 0.6;
+    background-color: #00aac0;
   }
 
   &:disabled {

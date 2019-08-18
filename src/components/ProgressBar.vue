@@ -1,6 +1,6 @@
 <template lang="pug">
-.bar(:style="{ height }")
-  .progress(:style="{width: percentage}")
+.bar(:style="{ height, backgroundColor }")
+  .progress(:style="{width: percentage, backgroundColor: foregroundColor }")
 </template>
 
 <script>
@@ -14,6 +14,14 @@ export default {
       type: String,
       default: '8px',
     },
+    backgroundColor: {
+      type: String,
+      default: '#e8e8e8',
+    },
+    foregroundColor: {
+      type: String,
+      default: 'green',
+    },
   },
   computed: {
     percentage() {
@@ -24,12 +32,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.bar {
-  background-color: #e8e8e8;
-}
-
 .progress {
   height: 100%;
-  background-color: green;
 }
 </style>
