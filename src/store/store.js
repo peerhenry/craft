@@ -2,25 +2,17 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import inventory from '@s/modules/inventory.js'
 import recipes from '@s/modules/recipes.js'
+import activity from '@s/modules/activity.js'
 
 Vue.use(Vuex)
-
-export const getters = {
-  canCraft: state => item => {
-    const recipe = state.recipes[item]
-    if (!recipe) return false
-    for (const [invItem, itemCost] of Object.entries(recipe.cost)) {
-      const hasReq = state.inventory[invItem] >= itemCost
-      if (!hasReq) return false
-    }
-    return true
-  },
-}
 
 export default new Vuex.Store({
   modules: {
     inventory,
     recipes,
+    activity,
   },
-  getters,
+  getters: {
+    recipes: (_s, _g, rootState) => rootState.recipes,
+  },
 })

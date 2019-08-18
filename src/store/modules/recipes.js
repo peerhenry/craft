@@ -5,6 +5,9 @@ import recipes from '@/settings/recipes.js'
 export default {
   namespaced: true,
   state: recipes,
+  getters: {
+    recipe: state => item => state[item],
+  },
   mutations: {
     [ADD_RECIPE](state, payload) {
       if (!state[payload.name]) Vue.set(state, payload.name, payload.recipe)

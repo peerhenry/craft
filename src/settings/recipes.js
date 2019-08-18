@@ -1,10 +1,19 @@
 export default {
-  chair: {
-    name: 'Chair',
+  sticks: {
+    name: 'Sticks',
     cost: {
-      wood: 4,
+      wood: 1,
     },
-    seconds: 4,
+    seconds: 2,
+    amount: 2,
+  },
+  planks: {
+    name: 'Planks',
+    cost: {
+      wood: 1,
+    },
+    seconds: 2,
+    amount: 1,
   },
   sharp_stone: {
     name: 'Sharp Stone',
@@ -12,13 +21,15 @@ export default {
       stone: 2,
     },
     seconds: 4,
+    amount: 1,
   },
   stone_axe: {
     name: 'Stone Axe',
     cost: {
-      stick: 3,
-      sharp_store: 2,
+      sticks: 3,
+      sharp_stone: 2,
     },
     seconds: 4,
+    amount: 1,
   },
 }

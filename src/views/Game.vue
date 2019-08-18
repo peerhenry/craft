@@ -1,41 +1,25 @@
 <template lang="pug">
   #game
     h1#title CRAFT
-    p state: {{ state }}
+    p status: {{ status }}
     .grid
-      .inventory
-        h2.section-header Inventory
-        p(v-for="(value, item) in inventory") {{ item }}: {{ value }}
-      .actions
-        h2.section-header Actions
-        div
-          button.action-btn(@click="startGathering('wood')") gather wood
-          Spinner(v-show="gatheringResource === 'wood'")
-        div
-          button.action-btn(@click="startGathering('stone')") gather stone
-          Spinner(v-show="gatheringResource === 'stone'")
-      .crafting
-        h2.section-header Crafting
-        div
-          button.action-btn(@click="craft('chair')" :disabled="!canCraft('chair')") craft chair
-          Spinner(v-show="crafting === 'chair'")
-          ProgressBar(v-show="crafting === 'chair'" :progress="Math.round(craftProgress)")
+      Inventory
+      Gathering
+      Crafting
       div(style="margin-top: 32px")
-        button.action-btn(@click="startGathering()") cancel action
+        button.action-btn(@click="stop") stop current activity
 </template>
 
 <script>
-import { setTimeout, clearTimeout, setInterval, clearInterval } from 'timers'
-import Spinner from '@c/Spinner.vue'
-import ProgressBar from '@c/ProgressBar.vue'
-import { mapState, mapGetters, createNamespacedHelpers } from 'vuex'
-import { ADD_ITEM } from '@s/mutation-types.js'
-
-const { mapMutations } = createNamespacedHelpers('inventory')
+import Gathering from '@/views/Gathering.vue'
+import Crafting from '@/views/Crafting.vue'
+import Inventory from '@/views/Inventory.vue'
+import { createNamespacedHelpers } from 'vuex'
+const { mapGetters, mapActions } = createNamespacedHelpers('activity')
 
 export default {
   name: 'Game',
-  components: { Spinner, ProgressBar },
+  components: { Gathering, Crafting, Inventory },
   data() {
     return {
       gatheringResource: null,
@@ -45,99 +29,8 @@ export default {
       currentInterval: null,
     }
   },
-  computed: {
-    ...mapState({
-      inventory: state => state.inventory,
-      recipes: state => state.recipes,
-    }),
-    ...mapGetters(['canCraft']),
-    state() {
-      if (this.gatheringResource) return `gathering ${this.gatheringResource}`
-      else if (this.crafting) return `crafting ${this.crafting}`
-      else return 'idle'
-    },
-  },
-  methods: {
-    ...mapMutations([ADD_ITEM]),
-    startGathering(resource) {
-      if (this.isValidResource(resource)) {
-        if (resource !== this.gatheringResource) {
-          this.cancel()
-          this.gatheringResource = resource
-          this.setGatherTimeout()
-        }
-      } else {
-        this.cancel()
-        this.gatheringResource = null
-      }
-    },
-    isValidResource(resource) {
-      return resource === 'wood' || resource === 'stone'
-    },
-    cancel() {
-      clearTimeout(this.currentTimeout)
-      this.currentTimeout = null
-
-      clearInterval(this.currentInterval)
-      this.currentInterval = null
-      this.craftProgress = 0
-
-      this.gatheringResource = null
-      if (this.crafting) {
-        const cost = this.recipes[this.crafting].cost
-        for (const [key, val] of Object.entries(cost)) {
-          this[[ADD_ITEM]]({
-            item: key,
-            amount: val,
-          })
-        }
-      }
-      this.crafting = null
-    },
-    setGatherTimeout() {
-      this.currentTimeout = setTimeout(
-        () => this.gather(this.gatheringResource),
-        1000
-      )
-    },
-    gather(resource) {
-      this[ADD_ITEM]({ item: resource, amount: 4 })
-      this.setGatherTimeout()
-    },
-    craft(item) {
-      const isValid = item in this.recipes
-      if (!isValid) return
-      if (this.crafting !== item && this.currentTimeout) {
-        this.cancel()
-      }
-      const recipe = this.recipes[item]
-      const cost = recipe.cost
-      const costEntries = Object.entries(cost)
-      for (const [key, val] of costEntries) {
-        this[ADD_ITEM]({
-          item: key,
-          amount: -val,
-        })
-      }
-      this.crafting = item
-      const recipeMs = recipe.seconds * 1000
-      this.currentTimeout = setTimeout(() => {
-        this[ADD_ITEM]({ item })
-        this.crafting = null
-        this.cancel()
-      }, recipeMs)
-      const stepMs = 33
-      const progressStep = (stepMs / recipeMs) * 100
-      this.currentInterval = setInterval(() => {
-        this.craftProgress += progressStep
-        if (this.craftProgress >= 100) {
-          this.craftProgress = 0
-          clearInterval(this.currentInterval)
-          this.currentInterval = null
-        }
-      }, stepMs)
-    },
-  },
+  computed: mapGetters(['status']),
+  methods: mapActions(['stop']),
 }
 </script>
 
