@@ -1,8 +1,5 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
 import { ADD_ITEM } from '@s/mutation-types.js'
-
-Vue.use(Vuex)
 
 export default {
   namespaced: true,

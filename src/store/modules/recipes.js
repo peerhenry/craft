@@ -1,9 +1,6 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
 import { ADD_RECIPE } from '@s/mutation-types.js'
 import recipes from '@/settings/recipes.js'
-
-Vue.use(Vuex)
 
 export default {
   namespaced: true,

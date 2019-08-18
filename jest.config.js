@@ -9,6 +9,8 @@ module.exports = {
   transformIgnorePatterns: ['/node_modules/'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^@c/(.*)$': '<rootDir>/src/components/$1',
+    '^@s/(.*)$': '<rootDir>/src/store/$1',
   },
   snapshotSerializers: ['jest-serializer-vue'],
   testMatch: [
