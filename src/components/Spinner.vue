@@ -1,18 +1,47 @@
 <template lang="pug">
-.loader
+.loader(:style="loaderStyle")
 </template>
 
 <script>
-export default {}
+export default {
+  props: {
+    size: {
+      type: String,
+      default: '1.4rem',
+    },
+    borderThickness: {
+      type: String,
+      default: '0.4rem',
+    },
+    color1: {
+      type: String,
+      default: '#f3f3f3',
+    },
+    color2: {
+      type: String,
+      default: '#3498db',
+    },
+  },
+  computed: {
+    loaderStyle() {
+      return {
+        width: this.size,
+        height: this.size,
+        border: `${this.borderThickness} solid ${this.color1}`,
+        borderTop: `${this.borderThickness} solid ${this.color2}`,
+      }
+    },
+  },
+}
 </script>
 
 <style scoped lang="scss">
+$border-thickness: 0.4rem;
+$spinner-size: 1.4rem;
+
 .loader {
-  border: 16px solid #f3f3f3;
+  display: inline-block;
   border-radius: 50%;
-  border-top: 16px solid #3498db;
-  width: 120px;
-  height: 120px;
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
 }

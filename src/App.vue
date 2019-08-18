@@ -14,6 +14,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import 'assets/reset.css';
+
 html {
   font-size: 62.5%; // 10px
 }
