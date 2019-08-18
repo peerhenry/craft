@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import { ADD_ITEM } from '@s/mutation-types.js'
+import gatherables from '@/settings/gatherables.js'
 
 // activity types
 const IDLE = 'idle'
@@ -33,7 +34,7 @@ export default {
     isCrafting: state => item =>
       state.currentActivity.type === CRAFTING &&
       state.currentActivity.item === item,
-    gatherTimeMs: () => () => 1000,
+    gatherTimeMs: () => item => gatherables[item].durationSeconds * 1000,
     craftProgress: state => state.craftProgress,
     canCraft: (_s, _g, rootState) => item => {
       const recipe = rootState.recipes[item]
@@ -71,7 +72,7 @@ export default {
         type: GATHERING,
         item: item,
       })
-      setGatherTimeout(context, item, 1) // todo: lookup amount in gatherables)
+      setGatherTimeout(context, item, gatherables[item].amount)
     },
     stop: context => {
       if (context.state.currentActivity.type === CRAFTING) {
