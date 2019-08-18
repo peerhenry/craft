@@ -15,5 +15,6 @@ export default {
 <style scoped lang="scss">
 p {
   text-align: left;
+  font-size: 1.8rem;
 }
 </style>

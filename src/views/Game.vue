@@ -1,7 +1,9 @@
 <template lang="pug">
   #game
-    h1#title CRAFT
-    p status: {{ status }}
+    .topbar
+      h1#title CRAFT
+      span.version v. 0.0.1
+    p.status status: {{ status }}
     .grid
       Inventory
       Gathering
@@ -47,7 +49,7 @@ export default {
 #title {
   font-size: 3rem;
   font-weight: bold;
-  margin: 1rem;
+  margin: 2rem;
 }
 
 .action-btn {
@@ -84,5 +86,15 @@ export default {
 .section-header {
   font-size: 3rem;
   margin: 1rem 0;
+}
+
+.version {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.status {
+  font-size: 1.8rem;
 }
 </style>
