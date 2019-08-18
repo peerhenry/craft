@@ -26,28 +26,27 @@
 <script>
 import { setTimeout, clearTimeout } from 'timers'
 import Spinner from '@c/Spinner.vue'
-import Vue from 'vue'
+import { mapState, mapGetters, createNamespacedHelpers } from 'vuex'
+import { ADD_ITEM } from '@s/mutation-types.js'
+
+const { mapMutations } = createNamespacedHelpers('inventory')
 
 export default {
   name: 'Game',
   components: { Spinner },
   data() {
     return {
-      inventory: {},
       gatheringResource: null,
       crafting: null,
       currentTimeout: null,
-      recipes: {
-        chair: {
-          cost: {
-            wood: 4,
-          },
-          seconds: 1,
-        },
-      },
     }
   },
   computed: {
+    ...mapState({
+      inventory: state => state.inventory,
+      recipes: state => state.recipes,
+    }),
+    ...mapGetters(['canCraft']),
     state() {
       if (this.gatheringResource) return `gathering ${this.gatheringResource}`
       else if (this.crafting) return `crafting ${this.crafting}`
@@ -55,15 +54,21 @@ export default {
     },
   },
   methods: {
-    gather(resource) {
-      this.addToInventory(resource, 1)
-      this.setGatherTimeout()
+    ...mapMutations([ADD_ITEM]),
+    startGathering(resource) {
+      if (this.isValidResource(resource)) {
+        if (resource !== this.gatheringResource) {
+          this.cancel()
+          this.gatheringResource = resource
+          this.setGatherTimeout()
+        }
+      } else {
+        this.cancel()
+        this.gatheringResource = null
+      }
     },
-    setGatherTimeout() {
-      this.currentTimeout = setTimeout(
-        () => this.gather(this.gatheringResource),
-        1000
-      )
+    isValidResource(resource) {
+      return resource === 'wood' || resource === 'stone'
     },
     cancel() {
       clearTimeout(this.currentTimeout)
@@ -77,34 +82,15 @@ export default {
       }
       this.crafting = null
     },
-    addToInventory(item, amount) {
-      if (!this.inventory[item]) Vue.set(this.inventory, item, 0)
-      this.inventory[item] += amount || 1
+    setGatherTimeout() {
+      this.currentTimeout = setTimeout(
+        () => this.gather(this.gatheringResource),
+        1000
+      )
     },
-    startGathering(resource) {
-      if (this.isValidResource(resource)) {
-        if (resource !== this.gatheringResource) {
-          this.cancel()
-          this.gatheringResource = resource
-          this.addToInventory(resource, 1)
-          this.setGatherTimeout()
-        }
-      } else {
-        this.cancel()
-        this.gatheringResource = null
-      }
-    },
-    isValidResource(resource) {
-      return resource === 'wood' || resource === 'stone'
-    },
-    canCraft(item) {
-      const recipe = this.recipes[item]
-      if (!recipe) return false
-      for (const [invItem, itemCost] of Object.entries(recipe.cost)) {
-        const hasReq = this.inventory[invItem] >= itemCost
-        if (!hasReq) return false
-      }
-      return true
+    gather(resource) {
+      this[ADD_ITEM]({ item: resource, amount: 1 })
+      this.setGatherTimeout()
     },
     craft(item) {
       const isValid = item in this.recipes
@@ -116,11 +102,14 @@ export default {
       const cost = recipe.cost
       const costEntries = Object.entries(cost)
       for (const [key, val] of costEntries) {
-        this.addToInventory(key, -val)
+        this[ADD_ITEM]({
+          item: key,
+          amount: -val,
+        })
       }
       this.crafting = item
       this.currentTimeout = setTimeout(() => {
-        this.addToInventory(item)
+        this[ADD_ITEM]({ item })
         this.crafting = null
         this.cancel()
       }, recipe.seconds * 1000)
