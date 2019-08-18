@@ -3,6 +3,9 @@
     h1#title CRAFT
     p state: {{ state }}
     .grid
+      .inventory
+        h2.section-header Inventory
+        p(v-for="(value, item) in inventory") {{ item }}: {{ value }}
       .actions
         h2.section-header Actions
         div
@@ -11,38 +14,49 @@
         div
           button.action-btn(@click="startGathering('stone')") gather stone
           Spinner(v-show="gatheringResource === 'stone'")
+      .crafting
+        h2.section-header Crafting
         div
-          button.action-btn(@click="startGathering()") stop gathering
-      .inventory
-        h2.section-header Inventory
-        p wood: {{ wood }}
-        p stone: {{ stone }}
+          button.action-btn(@click="craft('chair')" :disabled="!canCraft('chair')") craft chair
+          Spinner(v-show="crafting === 'chair'")
+      div(style="margin-top: 32px")
+        button.action-btn(@click="startGathering()") cancel action
 </template>
 
 <script>
 import { setTimeout, clearTimeout } from 'timers'
 import Spinner from '@c/Spinner.vue'
+import Vue from 'vue'
 
 export default {
   name: 'Game',
   components: { Spinner },
   data() {
     return {
-      wood: 0,
-      stone: 0,
+      inventory: {},
       gatheringResource: null,
+      crafting: null,
       currentTimeout: null,
+      recipes: {
+        chair: {
+          cost: {
+            wood: 4,
+          },
+          seconds: 1,
+        },
+      },
     }
   },
   computed: {
     state() {
       if (this.gatheringResource) return `gathering ${this.gatheringResource}`
+      else if (this.crafting) return `crafting ${this.crafting}`
       else return 'idle'
     },
   },
   methods: {
     gather(resource) {
-      this[resource] += 1
+      this.addToInventory(resource, 1)
       this.setGatherTimeout()
     },
     setGatherTimeout() {
@@ -51,20 +65,65 @@ export default {
         1000
       )
     },
+    cancel() {
+      clearTimeout(this.currentTimeout)
+      this.currentTimeout = null
+      this.gatheringResource = null
+      if (this.crafting) {
+        const cost = this.recipes[this.crafting].cost
+        for (const [key, val] of Object.entries(cost)) {
+          this.addToInventory(key, val)
+        }
+      }
+      this.crafting = null
+    },
+    addToInventory(item, amount) {
+      if (!this.inventory[item]) Vue.set(this.inventory, item, 0)
+      this.inventory[item] += amount || 1
+    },
     startGathering(resource) {
       if (this.isValidResource(resource)) {
         if (resource !== this.gatheringResource) {
-          clearTimeout(this.currentTimeout)
+          this.cancel()
           this.gatheringResource = resource
+          this.addToInventory(resource, 1)
           this.setGatherTimeout()
         }
       } else {
-        clearTimeout(this.currentTimeout)
+        this.cancel()
         this.gatheringResource = null
       }
     },
     isValidResource(resource) {
       return resource === 'wood' || resource === 'stone'
+    },
+    canCraft(item) {
+      const recipe = this.recipes[item]
+      if (!recipe) return false
+      for (const [invItem, itemCost] of Object.entries(recipe.cost)) {
+        const hasReq = this.inventory[invItem] >= itemCost
+        if (!hasReq) return false
+      }
+      return true
+    },
+    craft(item) {
+      const isValid = item in this.recipes
+      if (!isValid) return
+      if (this.crafting !== item && this.currentTimeout) {
+        this.cancel()
+      }
+      const recipe = this.recipes[item]
+      const cost = recipe.cost
+      const costEntries = Object.entries(cost)
+      for (const [key, val] of costEntries) {
+        this.addToInventory(key, -val)
+      }
+      this.crafting = item
+      this.currentTimeout = setTimeout(() => {
+        this.addToInventory(item)
+        this.crafting = null
+        this.cancel()
+      }, recipe.seconds * 1000)
     },
   },
 }
@@ -101,6 +160,11 @@ export default {
 
   &:hover {
     opacity: 0.6;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
   }
 }
 
