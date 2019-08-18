@@ -55,10 +55,10 @@ export default {
   },
 
   actions: {
-    craft: (context, item) => {
+    craft: async (context, item) => {
+      await context.dispatch('stop')
       const recipe = context.rootGetters['recipes/recipe'](item)
       subtractCost(context.commit, recipe)
-      context.dispatch('stop')
       context.commit('SET_CURRENT_ACTIVITY', {
         type: CRAFTING,
         item: item,
@@ -74,18 +74,41 @@ export default {
       setGatherTimeout(context, item, 1) // todo: lookup amount in gatherables)
     },
     stop: context => {
+      if (context.state.currentActivity.type === CRAFTING) {
+        const recipe = context.rootGetters['recipes/recipe'](
+          context.state.currentActivity.item
+        )
+        refundCost(context.commit, recipe)
+      }
       context.commit('SET_CURRENT_ACTIVITY', idleActivity)
-      clearTimeout(context.state.timeout)
-      context.commit('SET_TIMEOUT', null)
+      cancelInterval(context.commit, context.state.interval)
+      cancelTimeout(context.commit, context.state.timeout)
     },
   },
 }
 
 // ==== HELPERS ====
 
+const cancelInterval = (commit, interval) => {
+  clearInterval(interval)
+  commit('SET_INTERVAL', null)
+  commit('SET_CRAFT_PROGRSS', 0)
+}
+
+const cancelTimeout = (commit, timeout) => {
+  clearTimeout(timeout)
+  commit('SET_TIMEOUT', null)
+}
+
 const subtractCost = (commit, recipe) => {
   for (const [item, amount] of Object.entries(recipe.cost)) {
     addItem(commit, item, -amount)
+  }
+}
+
+const refundCost = (commit, recipe) => {
+  for (const [item, amount] of Object.entries(recipe.cost)) {
+    addItem(commit, item, amount)
   }
 }
 
@@ -99,6 +122,7 @@ const setCraftTimeout = (context, craftingTimeMs, item, amount) => {
   context.commit(
     'SET_TIMEOUT',
     setTimeout(() => {
+      context.commit('SET_CURRENT_ACTIVITY', idleActivity)
       addItem(context.commit, item, amount)
       context.dispatch('stop')
     }, craftingTimeMs)

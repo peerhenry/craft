@@ -1,10 +1,12 @@
 <template lang="pug">
 .crafting
   h2.section-header Crafting
-  div(v-for="(recipe, item) of recipes")
-    button.action-btn(@click="craft(item)" :disabled="!canCraft(item)") craft {{ recipe.name }}
-    Spinner(v-show="isCrafting(item)")
-    ProgressBar(v-show="isCrafting(item)" :progress="Math.round(craftProgress)")
+  .craft-grid
+    div(v-for="(recipe, item) of recipes")
+      button.action-btn(@click="craft(item)" :disabled="!canCraft(item)") craft {{ recipe.name }}
+      Spinner(v-show="isCrafting(item)")
+      .bar
+        ProgressBar(v-show="isCrafting(item)" :progress="Math.round(craftProgress)" height="8px")
 </template>
 
 <script>
@@ -29,4 +31,14 @@ export default {
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.craft-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 1rem;
+}
+
+.bar {
+  height: 8px;
+}
+</style>

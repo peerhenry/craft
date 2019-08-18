@@ -32,4 +32,14 @@ export default {
     seconds: 4,
     amount: 1,
   },
+  stone_pickaxe: {
+    name: 'Stone Pickaxe',
+    cost: {
+      sticks: 2,
+      stone: 1,
+      sharp_stone: 2,
+    },
+    seconds: 4,
+    amount: 1,
+  },
 }

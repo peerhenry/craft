@@ -1,5 +1,5 @@
 <template lang="pug">
-.bar
+.bar(:style="{ height }")
   .progress(:style="{width: percentage}")
 </template>
 
@@ -9,6 +9,10 @@ export default {
     progress: {
       type: Number,
       default: 0,
+    },
+    height: {
+      type: String,
+      default: '8px',
     },
   },
   computed: {
@@ -21,7 +25,6 @@ export default {
 
 <style scoped lang="scss">
 .bar {
-  height: 14px;
   background-color: #e8e8e8;
 }
 

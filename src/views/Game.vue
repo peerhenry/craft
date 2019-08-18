@@ -6,8 +6,8 @@
       Inventory
       Gathering
       Crafting
-      div(style="margin-top: 32px")
-        button.action-btn(@click="stop") stop current activity
+    div(style="margin-top: 32px")
+      button.action-btn(@click="stop") stop current activity
 </template>
 
 <script>
@@ -75,7 +75,8 @@ export default {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1rem;
   width: 50%;
   margin: auto;
 }
