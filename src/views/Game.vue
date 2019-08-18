@@ -19,13 +19,15 @@
         div
           button.action-btn(@click="craft('chair')" :disabled="!canCraft('chair')") craft chair
           Spinner(v-show="crafting === 'chair'")
+          ProgressBar(v-show="crafting === 'chair'" :progress="Math.round(craftProgress)")
       div(style="margin-top: 32px")
         button.action-btn(@click="startGathering()") cancel action
 </template>
 
 <script>
-import { setTimeout, clearTimeout } from 'timers'
+import { setTimeout, clearTimeout, setInterval, clearInterval } from 'timers'
 import Spinner from '@c/Spinner.vue'
+import ProgressBar from '@c/ProgressBar.vue'
 import { mapState, mapGetters, createNamespacedHelpers } from 'vuex'
 import { ADD_ITEM } from '@s/mutation-types.js'
 
@@ -33,12 +35,14 @@ const { mapMutations } = createNamespacedHelpers('inventory')
 
 export default {
   name: 'Game',
-  components: { Spinner },
+  components: { Spinner, ProgressBar },
   data() {
     return {
       gatheringResource: null,
       crafting: null,
+      craftProgress: 0,
       currentTimeout: null,
+      currentInterval: null,
     }
   },
   computed: {
@@ -73,11 +77,19 @@ export default {
     cancel() {
       clearTimeout(this.currentTimeout)
       this.currentTimeout = null
+
+      clearInterval(this.currentInterval)
+      this.currentInterval = null
+      this.craftProgress = 0
+
       this.gatheringResource = null
       if (this.crafting) {
         const cost = this.recipes[this.crafting].cost
         for (const [key, val] of Object.entries(cost)) {
-          this.addToInventory(key, val)
+          this[[ADD_ITEM]]({
+            item: key,
+            amount: val,
+          })
         }
       }
       this.crafting = null
@@ -89,7 +101,7 @@ export default {
       )
     },
     gather(resource) {
-      this[ADD_ITEM]({ item: resource, amount: 1 })
+      this[ADD_ITEM]({ item: resource, amount: 4 })
       this.setGatherTimeout()
     },
     craft(item) {
@@ -108,11 +120,22 @@ export default {
         })
       }
       this.crafting = item
+      const recipeMs = recipe.seconds * 1000
       this.currentTimeout = setTimeout(() => {
         this[ADD_ITEM]({ item })
         this.crafting = null
         this.cancel()
-      }, recipe.seconds * 1000)
+      }, recipeMs)
+      const stepMs = 33
+      const progressStep = (stepMs / recipeMs) * 100
+      this.currentInterval = setInterval(() => {
+        this.craftProgress += progressStep
+        if (this.craftProgress >= 100) {
+          this.craftProgress = 0
+          clearInterval(this.currentInterval)
+          this.currentInterval = null
+        }
+      }, stepMs)
     },
   },
 }
