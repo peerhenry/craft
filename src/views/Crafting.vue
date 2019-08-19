@@ -2,11 +2,14 @@
 .crafting
   h2.section-header Crafting
   .craft-grid
-    div(v-for="(recipe, item) of recipes")
-      ActionButton(@click="craft(item)" :disabled="!canCraft(item)") craft {{ recipe.name }}
-      Spinner(v-show="isCrafting(item)")
+    div(v-for="(recipe, itemKey) of recipes")
+      ActionButton(@click="enqueueCraft(itemKey)" :disabled="!canCraft(itemKey)") craft {{ recipe.name }}
+      Spinner(v-show="isCraftingItem(itemKey)")
       .bar
-        ProgressBar(v-show="isCrafting(item)" :progress="Math.round(craftProgress)" height="8px")
+        ProgressBar(v-show="isCraftingItem(itemKey)" :progress="Math.round(craftProgress)" height="8px")
+  h2.section-header Crafting Queue
+    div(v-for="recipe of craftQueue")
+      p {{ recipe.name }}
 </template>
 
 <script>
@@ -16,18 +19,19 @@ import Spinner from '@c/Spinner.vue'
 import ProgressBar from '@c/ProgressBar.vue'
 import ActionButton from '@c/ActionButton.vue'
 const { mapMutations } = createNamespacedHelpers('inventory')
-const { mapActions } = createNamespacedHelpers('activity')
+const { mapActions, mapState } = createNamespacedHelpers('activity')
 
 export default {
   name: 'Crafting',
   components: { Spinner, ProgressBar, ActionButton },
   computed: {
     ...mapGetters(['recipes']),
-    ...mapGetters('activity', ['isCrafting', 'canCraft', 'craftProgress']),
+    ...mapGetters('activity', ['isCraftingItem', 'canCraft', 'craftProgress']),
+    ...mapState(['craftQueue']),
   },
   methods: {
     ...mapMutations([ADD_ITEM]),
-    ...mapActions(['craft']),
+    ...mapActions(['enqueueCraft']),
   },
 }
 </script>

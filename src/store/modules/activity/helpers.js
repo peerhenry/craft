@@ -25,7 +25,7 @@ export const refundCost = (commit, recipe) => {
 }
 
 export const setCraftTimeoutAndInterval = (context, item, recipe) => {
-  const craftingTimeMs = recipe.seconds * 1000
+  const craftingTimeMs = recipe.craftDurationSeconds * 1000
   setCraftTimeout(context, craftingTimeMs, item, 1)
   setCraftInterval(context, craftingTimeMs)
 }
@@ -41,6 +41,7 @@ export const finishCraft = (context, item, amount) => {
   context.commit('SET_CURRENT_ACTIVITY', idleActivity)
   addItem(context.commit, item, amount)
   context.dispatch('stop')
+  context.dispatch('craftNextInQueue')
 }
 
 export const setCraftInterval = (context, craftingTimeMs) => {

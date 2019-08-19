@@ -8,6 +8,14 @@ import {
 } from '@s/modules/activity/activity-types.js'
 import * as helpers from '@s/modules/activity/helpers'
 
+export const state = {
+  craftQueue: [],
+  currentActivity: idleActivity,
+  craftProgress: 0,
+  interval: null,
+  timeout: null,
+}
+
 export const getters = {
   status: state => {
     if (state.currentActivity.type === IDLE) return 'idle'
@@ -16,9 +24,10 @@ export const getters = {
   isGathering: state => item =>
     state.currentActivity.type === GATHERING &&
     state.currentActivity.item === item,
-  isCrafting: state => item =>
+  isCraftingItem: state => item =>
     state.currentActivity.type === CRAFTING &&
     state.currentActivity.item === item,
+  isCrafting: state => state.currentActivity.type === CRAFTING,
   gatherTimeMs: () => item => gatherables[item].durationSeconds * 1000,
   craftProgress: state => state.craftProgress,
   canCraft: (_s, _g, rootState) => item => {
@@ -38,18 +47,33 @@ export const mutations = {
   SET_INTERVAL: (state, interval) => (state.interval = interval),
   SET_TIMEOUT: (state, timeout) => (state.timeout = timeout),
   SET_CRAFT_PROGRSS: (state, progress) => (state.craftProgress = progress),
+  ENQUEUE_CRAFT: (state, recipe) => {
+    state.craftQueue.push(recipe)
+  },
+  DEQUEUE_CRAFT: state => state.craftQueue.shift(),
 }
 
 export const actions = {
-  craft: async (context, item) => {
+  enqueueCraft: (context, itemKey) => {
+    const recipe = context.rootGetters['recipes/recipe'](itemKey)
+    context.commit('ENQUEUE_CRAFT', recipe)
+    if (!context.getters.isCrafting) context.dispatch('craftNextInQueue')
+  },
+  craftNextInQueue: c => {
+    if (c.state.craftQueue.length === 0) return
+    const nextRecipe = c.state.craftQueue[0]
+    c.commit('DEQUEUE_CRAFT')
+    c.dispatch('craft', nextRecipe)
+  },
+  craft: async (context, recipe) => {
+    // obsolete?
     await context.dispatch('stop')
-    const recipe = context.rootGetters['recipes/recipe'](item)
     helpers.subtractCost(context.commit, recipe)
     context.commit('SET_CURRENT_ACTIVITY', {
       type: CRAFTING,
-      item: item,
+      item: recipe.key,
     })
-    helpers.setCraftTimeoutAndInterval(context, item, recipe)
+    helpers.setCraftTimeoutAndInterval(context, recipe.key, recipe)
   },
   gather: (context, item) => {
     context.dispatch('stop')
@@ -74,12 +98,7 @@ export const actions = {
 
 export default {
   namespaced: true,
-  state: {
-    currentActivity: idleActivity,
-    craftProgress: 0,
-    interval: null,
-    timeout: null,
-  },
+  state,
   getters,
   mutations,
   actions,
