@@ -12,7 +12,7 @@ const recipes = {
     cost: {
       wood: 1,
     },
-    craftDurationSeconds: 2000,
+    craftDurationSeconds: 2,
     amount: 1,
   },
   sharp_stone: {

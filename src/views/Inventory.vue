@@ -1,7 +1,8 @@
 <template lang="pug">
 .inventory
   h2.section-header Inventory
-  p(v-for="(value, itemKey) in inventory") {{ displayItem(itemKey) }}: {{ value }}
+  .inventory-contents
+    .inventory-item(v-for="(value, itemKey) in inventory") {{ displayItem(itemKey) }}: {{ value }}
 </template>
 
 <script>
@@ -15,8 +16,17 @@ export default {
 </script>
 
 <style scoped lang="scss">
-p {
+.inventory-contents {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 1rem;
+}
+
+.inventory-item {
   text-align: left;
   font-size: 1.8rem;
+  padding: 1em;
+  background-color: #eee;
+  border-radius: 5px;
 }
 </style>
