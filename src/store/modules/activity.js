@@ -72,7 +72,7 @@ export const actions = {
       type: CRAFTING,
       subject: recipeKey,
     })
-    helpers.setCraftTimeoutAndInterval(c, recipe.key, recipe)
+    helpers.setCraftTimeoutAndInterval(c, recipe)
   },
   gather: (context, gatherableKey) => {
     context.dispatch('stop')

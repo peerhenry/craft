@@ -6,7 +6,14 @@ const itemDisplay = {
     displayRecipe(key) {
       const recipe = recipes[key]
       const item = items[recipe.itemKey]
-      return `${item.icon} ${item.name}`
+      const name = this.keyToDisplayName(recipe.itemKey)
+      return `${item.icon} ${name}`
+    },
+    keyToDisplayName(key) {
+      return key
+        .split('_')
+        .map(word => word[0].toUpperCase() + word.slice(1))
+        .join(' ')
     },
   },
 }

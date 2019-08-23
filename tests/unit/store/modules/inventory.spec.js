@@ -7,10 +7,6 @@ describe('inventory', () => {
   })
 
   it('should have empty state', () => {
-    expect(inventory.state).toEqual({})
-  })
-
-  it('should have empty state', () => {
     // arrange
     const expected = 24
     const state = {}

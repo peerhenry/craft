@@ -34,7 +34,7 @@ const items = {
     icon: '🗿',
   },
   stone_axe: {
-    name: 'Sharp Stone',
+    name: 'Stone Axe',
     icon: '⛏',
   },
   stone_pickaxe: {

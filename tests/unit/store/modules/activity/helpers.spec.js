@@ -100,7 +100,8 @@ describe('helpers', () => {
     expect(context.dispatch).toHaveBeenCalledTimes(2)
     expect(context.dispatch).toHaveBeenCalledWith('stop')
     expect(context.dispatch).toHaveBeenCalledWith('craftNextInQueue')
-    expect(context.commit).toHaveBeenCalledTimes(2)
+    expect(context.commit).toHaveBeenCalledTimes(3)
+    expect(context.commit).toHaveBeenCalledWith('DEQUEUE_CRAFT')
     expectAddItem(context.commit, item, amount)
   })
 
