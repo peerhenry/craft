@@ -39,9 +39,10 @@ export const setCraftTimeout = (context, craftingTimeMs, itemKey, amount) => {
 
 export const finishCraft = (context, itemKey, amount) => {
   context.commit('DEQUEUE_CRAFT')
-  context.commit('SET_CURRENT_ACTIVITY', idleActivity)
+  context.commit('SET_IDLE')
   addItem(context.commit, itemKey, amount)
-  context.dispatch('stop')
+  cancelInterval(context.commit, context.state.interval)
+  cancelTimeout(context.commit, context.state.timeout)
   context.dispatch('craftNextInQueue')
 }
 

@@ -3,7 +3,7 @@
     .topbar
       h1#title CRAFT
       span.version v. 0.0.1
-    p.status status: {{ status }}
+    .status status: {{ status }}
     .grid
       Inventory
       Gathering
@@ -97,5 +97,6 @@ export default {
 
 .status {
   font-size: 1.8rem;
+  margin: 2rem 0;
 }
 </style>

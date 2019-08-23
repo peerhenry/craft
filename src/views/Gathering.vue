@@ -3,7 +3,7 @@
   h2.section-header Gathering
   .gather-grid
     .gatherable(v-for="(gatherable, gatherableKey) of gatherables")
-      ActionButton.gather-button(@click="gather(gatherableKey)") 
+      ActionButton.gather-button(@click="startGathering(gatherableKey)") 
         span.gather-label {{ displayItem(gatherable.itemKey) }}
         Spinner.gather-spinner(v-show="isGathering(gatherableKey)")
 </template>
@@ -24,7 +24,7 @@ export default {
     return { gatherables }
   },
   computed: mapGetters(['isGathering']),
-  methods: mapActions(['gather']),
+  methods: mapActions(['startGathering']),
 }
 </script>
 
