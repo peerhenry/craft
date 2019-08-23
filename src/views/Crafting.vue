@@ -6,8 +6,6 @@
       ActionButton.craft-button(@click="enqueueCraft(recipeKey)" :disabled="!canCraft(recipeKey)") 
         span {{ displayRecipe(recipeKey) }}
         Spinner.craft-spinner(v-show="isCraftingRecipe(recipeKey)")
-      .bar
-        ProgressBar(v-show="isCraftingRecipe(recipeKey)" :progress="Math.round(craftProgress)" height="8px")
   CraftingQueue
 </template>
 
@@ -15,7 +13,6 @@
 import { ADD_ITEM } from '@s/mutation-types.js'
 import { mapGetters, createNamespacedHelpers } from 'vuex'
 import Spinner from '@c/Spinner.vue'
-import ProgressBar from '@c/ProgressBar.vue'
 import ActionButton from '@c/ActionButton.vue'
 const { mapMutations } = createNamespacedHelpers('inventory')
 const { mapActions } = createNamespacedHelpers('activity')
@@ -24,15 +21,11 @@ import CraftingQueue from '@/views/CraftingQueue.vue'
 
 export default {
   name: 'Crafting',
-  components: { Spinner, ProgressBar, ActionButton, CraftingQueue },
+  components: { Spinner, ActionButton, CraftingQueue },
   mixins: [recipeDisplay],
   computed: {
     ...mapGetters(['recipes']),
-    ...mapGetters('activity', [
-      'isCraftingRecipe',
-      'canCraft',
-      'craftProgress',
-    ]),
+    ...mapGetters('activity', ['isCraftingRecipe', 'canCraft']),
   },
   methods: {
     ...mapMutations([ADD_ITEM]),
@@ -46,10 +39,6 @@ export default {
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 1rem;
-}
-
-.bar {
-  height: 8px;
 }
 
 .craft-button {
