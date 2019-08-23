@@ -74,7 +74,7 @@ export const actions = {
     c.dispatch('craft', recipeKey)
   },
   craft: async (c, recipeKey) => {
-    c.dispatch('stop') // other actions must be stopped
+    await c.dispatch('stop') // other actions must be stopped
     const recipe = recipes[recipeKey]
     c.commit('SET_CURRENT_ACTIVITY', {
       type: CRAFTING,

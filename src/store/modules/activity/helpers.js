@@ -1,5 +1,4 @@
 import { ADD_ITEM } from '@s/mutation-types.js'
-import { idleActivity } from '@s/modules/activity/activity-types.js'
 
 export const cancelInterval = (commit, interval) => {
   clearInterval(interval)
@@ -41,8 +40,6 @@ export const finishCraft = (context, itemKey, amount) => {
   context.commit('DEQUEUE_CRAFT')
   context.commit('SET_IDLE')
   addItem(context.commit, itemKey, amount)
-  cancelInterval(context.commit, context.state.interval)
-  cancelTimeout(context.commit, context.state.timeout)
   context.dispatch('craftNextInQueue')
 }
 

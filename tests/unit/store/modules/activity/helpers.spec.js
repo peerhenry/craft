@@ -97,8 +97,6 @@ describe('helpers', () => {
     // act
     helpers.finishCraft(context, item, amount)
     // assert
-    expect(context.dispatch).toHaveBeenCalledTimes(2)
-    expect(context.dispatch).toHaveBeenCalledWith('stop')
     expect(context.dispatch).toHaveBeenCalledWith('craftNextInQueue')
     expect(context.commit).toHaveBeenCalledTimes(3)
     expect(context.commit).toHaveBeenCalledWith('DEQUEUE_CRAFT')
