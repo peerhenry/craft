@@ -15,11 +15,11 @@ export default {
     },
     color1: {
       type: String,
-      default: '#f3f3f3',
+      default: 'rgba(0,0,0,0.3)', // '#f3f3f3',
     },
     color2: {
       type: String,
-      default: '#3498db',
+      default: '#f3f3f3', // '#3498db'
     },
   },
   computed: {

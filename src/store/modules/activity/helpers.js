@@ -4,7 +4,7 @@ import { idleActivity } from '@s/modules/activity/activity-types.js'
 export const cancelInterval = (commit, interval) => {
   clearInterval(interval)
   commit('SET_INTERVAL', null)
-  commit('SET_CRAFT_PROGRSS', 0)
+  commit('SET_CRAFT_PROGRESS', 0)
 }
 
 export const cancelTimeout = (commit, timeout) => {
@@ -59,7 +59,7 @@ export const updateCraftingProgress = (context, percentChange) => {
     clearInterval(context.state.interval)
     context.commit('SET_INTERVAL', null)
   }
-  context.commit('SET_CRAFT_PROGRSS', newProgress)
+  context.commit('SET_CRAFT_PROGRESS', newProgress)
 }
 
 export const setGatherTimeout = (context, item, amount) => {

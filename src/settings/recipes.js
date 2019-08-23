@@ -1,7 +1,6 @@
 const recipes = {
   sticks: {
-    name: 'Sticks',
-    key: 'sticks',
+    itemKey: 'sticks',
     cost: {
       wood: 1,
     },
@@ -9,8 +8,7 @@ const recipes = {
     amount: 2,
   },
   planks: {
-    name: 'Planks',
-    key: 'planks',
+    itemKey: 'planks',
     cost: {
       wood: 1,
     },
@@ -18,8 +16,7 @@ const recipes = {
     amount: 1,
   },
   sharp_stone: {
-    name: 'Sharp Stone',
-    key: 'sharp_stone',
+    itemKey: 'sharp_stone',
     cost: {
       stone: 2,
     },
@@ -27,8 +24,7 @@ const recipes = {
     amount: 1,
   },
   stone_axe: {
-    name: 'Stone Axe',
-    key: 'stone_axe',
+    itemKey: 'stone_axe',
     cost: {
       sticks: 3,
       sharp_stone: 2,
@@ -37,8 +33,7 @@ const recipes = {
     amount: 1,
   },
   stone_pickaxe: {
-    name: 'Stone Pickaxe',
-    key: 'stone_pickaxe',
+    itemKey: 'stone_pickaxe',
     cost: {
       sticks: 2,
       stone: 1,

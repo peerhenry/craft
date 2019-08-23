@@ -6,5 +6,5 @@ export const MINING = 'MINING'
 
 export const idleActivity = {
   type: IDLE,
-  item: null,
+  subject: null,
 }

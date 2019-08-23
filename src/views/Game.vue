@@ -38,7 +38,7 @@ export default {
 
 <style lang="scss">
 #game {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Josefin Sans', 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -50,6 +50,7 @@ export default {
   font-size: 3rem;
   font-weight: bold;
   margin: 2rem;
+  font-family: 'Amaranth', sans-serif;
 }
 
 .action-btn {

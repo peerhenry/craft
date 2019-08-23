@@ -10,7 +10,7 @@ describe('helpers', () => {
     // assert
     expect(commit).toHaveBeenCalledTimes(2)
     expect(commit).toHaveBeenCalledWith('SET_INTERVAL', null)
-    expect(commit).toHaveBeenCalledWith('SET_CRAFT_PROGRSS', 0)
+    expect(commit).toHaveBeenCalledWith('SET_CRAFT_PROGRESS', 0)
   })
 
   test('cancelTimeout should work', () => {
@@ -97,7 +97,9 @@ describe('helpers', () => {
     // act
     helpers.finishCraft(context, item, amount)
     // assert
-    expect(context.dispatch).toHaveBeenCalledTimes(1)
+    expect(context.dispatch).toHaveBeenCalledTimes(2)
+    expect(context.dispatch).toHaveBeenCalledWith('stop')
+    expect(context.dispatch).toHaveBeenCalledWith('craftNextInQueue')
     expect(context.commit).toHaveBeenCalledTimes(2)
     expectAddItem(context.commit, item, amount)
   })

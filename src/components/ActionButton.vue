@@ -23,6 +23,8 @@ export default {
   font-size: 1.8rem;
   font-weight: bold;
   margin-right: 1rem;
+  font-family: inherit;
+  width: 100%;
 
   &:hover {
     background-color: #00aac0;

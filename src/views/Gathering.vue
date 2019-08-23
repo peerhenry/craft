@@ -2,9 +2,10 @@
 .gathering
   h2.section-header Gathering
   .gather-grid
-    .gatherable(v-for="gatherable of gatherables")
-      ActionButton(@click="gather(gatherable.item )") gather {{ gatherable.item }}
-      Spinner(v-show="isGathering(gatherable.item )")
+    .gatherable(v-for="(gatherable, gatherableKey) of gatherables")
+      ActionButton.gather-button(@click="gather(gatherableKey)") 
+        span.gather-label {{ displayItem(gatherable.itemKey) }}
+        Spinner.spinner(v-show="isGathering(gatherableKey)")
 </template>
 
 <script>
@@ -13,14 +14,14 @@ import ActionButton from '@c/ActionButton.vue'
 import { createNamespacedHelpers } from 'vuex'
 import gatherables from '@/settings/gatherables.js'
 const { mapActions, mapGetters } = createNamespacedHelpers('activity')
+import itemDisplay from '@/mixins/itemDisplay.js'
 
 export default {
   name: 'Gathering',
   components: { Spinner, ActionButton },
+  mixins: [itemDisplay],
   data() {
-    return {
-      gatherables,
-    }
+    return { gatherables }
   },
   computed: mapGetters(['isGathering']),
   methods: mapActions(['gather']),
@@ -32,5 +33,14 @@ export default {
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 1rem;
+}
+
+.gather-button {
+  position: relative;
+}
+
+.spinner {
+  position: absolute;
+  right: 1em;
 }
 </style>
