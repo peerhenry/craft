@@ -5,7 +5,7 @@
     .gatherable(v-for="(gatherable, gatherableKey) of gatherables")
       ActionButton.gather-button(@click="gather(gatherableKey)") 
         span.gather-label {{ displayItem(gatherable.itemKey) }}
-        Spinner.spinner(v-show="isGathering(gatherableKey)")
+        Spinner.gather-spinner(v-show="isGathering(gatherableKey)")
 </template>
 
 <script>
@@ -39,7 +39,7 @@ export default {
   position: relative;
 }
 
-.spinner {
+.gather-spinner {
   position: absolute;
   right: 1em;
 }

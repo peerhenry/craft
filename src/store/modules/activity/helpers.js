@@ -38,6 +38,7 @@ export const setCraftTimeout = (context, craftingTimeMs, item, amount) => {
 }
 
 export const finishCraft = (context, item, amount) => {
+  context.commit('DEQUEUE_CRAFT')
   context.commit('SET_CURRENT_ACTIVITY', idleActivity)
   addItem(context.commit, item, amount)
   context.dispatch('stop')

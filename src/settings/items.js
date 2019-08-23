@@ -9,19 +9,33 @@ const items = {
   },
   sticks: {
     name: 'Sticks',
-    icon: '❔',
+    icon: '🥖', //
   },
   planks: {
     name: 'Planks',
-    icon: '❔',
+    icon: '📏',
   },
+
+  // FOOD
+
+  fruit: {
+    name: 'Fruit',
+    icon: '🍒',
+  },
+  vegetables: {
+    name: 'Vegetables',
+    icon: '🥕',
+  },
+
+  // TOOLS
+
   sharp_stone: {
     name: 'Sharp Stone',
-    icon: '❔',
+    icon: '🗿',
   },
   stone_axe: {
     name: 'Sharp Stone',
-    icon: '❔',
+    icon: '⛏',
   },
   stone_pickaxe: {
     name: 'Stone Pickaxe',
@@ -30,14 +44,6 @@ const items = {
   stone_hammer: {
     name: 'Hammer',
     icon: '🔨',
-  },
-  fruit: {
-    name: 'Fruit',
-    icon: '🍒',
-  },
-  vegetables: {
-    name: 'Vegetables',
-    icon: '🥕',
   },
 }
 

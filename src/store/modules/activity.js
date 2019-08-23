@@ -54,20 +54,20 @@ export const mutations = {
 }
 
 export const actions = {
-  enqueueCraft: (context, recipeKey) => {
-    context.commit('ENQUEUE_CRAFT', recipeKey)
-    if (!context.getters.isCrafting) context.dispatch('craftNextInQueue')
+  enqueueCraft: (c, recipeKey) => {
+    c.commit('ENQUEUE_CRAFT', recipeKey)
+    const recipe = c.rootGetters['recipes/recipe'](recipeKey)
+    helpers.subtractCost(c.commit, recipe)
+    if (!c.getters.isCrafting) c.dispatch('craftNextInQueue')
   },
   craftNextInQueue: c => {
     if (c.state.craftQueue.length === 0) return
     const recipeKey = c.state.craftQueue[0]
-    c.commit('DEQUEUE_CRAFT')
     c.dispatch('craft', recipeKey)
   },
   craft: async (c, recipeKey) => {
     await c.dispatch('stop')
     const recipe = c.rootGetters['recipes/recipe'](recipeKey)
-    helpers.subtractCost(c.commit, recipe)
     c.commit('SET_CURRENT_ACTIVITY', {
       type: CRAFTING,
       subject: recipeKey,
