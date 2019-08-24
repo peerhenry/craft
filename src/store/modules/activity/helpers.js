@@ -1,14 +1,18 @@
 import { ADD_ITEM } from '@s/mutation-types.js'
 
-export const cancelInterval = (commit, interval) => {
-  clearInterval(interval)
-  commit('SET_INTERVAL', null)
-  commit('SET_CRAFT_PROGRESS', 0)
+export const clearTimeoutAndInterval = ctx => {
+  cancelInterval(ctx)
+  cancelTimeout(ctx)
 }
 
-export const cancelTimeout = (commit, timeout) => {
-  clearTimeout(timeout)
-  commit('SET_TIMEOUT', null)
+export const cancelInterval = ctx => {
+  clearInterval(ctx.state.interval)
+  ctx.commit('SET_INTERVAL', null)
+}
+
+export const cancelTimeout = ctx => {
+  clearTimeout(ctx.state.timeout)
+  ctx.commit('SET_TIMEOUT', null)
 }
 
 export const subtractCost = (commit, recipe) => {
@@ -24,15 +28,23 @@ export const refundCost = (commit, recipe) => {
 }
 
 export const setCraftTimeoutAndInterval = (context, recipe) => {
-  const craftingTimeMs = recipe.craftDurationSeconds * 1000
-  setCraftTimeout(context, craftingTimeMs, recipe.itemKey, 1)
-  setCraftInterval(context, craftingTimeMs)
+  const progress = context.getters.craftProgressPercent / 100
+  const craftingDurationMs = recipe.craftDurationSeconds * 1000
+  const remainingCraftTimeMs = craftingDurationMs * (1 - progress)
+  setCraftTimeout(context, {
+    timeMs: remainingCraftTimeMs,
+    recipe,
+  })
+  setCraftInterval(context, craftingDurationMs)
 }
 
-export const setCraftTimeout = (context, craftingTimeMs, itemKey, amount) => {
+export const setCraftTimeout = (context, payload) => {
   context.commit(
     'SET_TIMEOUT',
-    setTimeout(() => finishCraft(context, itemKey, amount), craftingTimeMs)
+    setTimeout(
+      () => finishCraft(context, payload.recipe.itemKey, payload.recipe.amount),
+      payload.timeMs
+    )
   )
 }
 
@@ -55,8 +67,7 @@ export const updateCraftingProgress = (context, percentChange) => {
   let newProgress = context.state.craftProgress + percentChange
   if (newProgress >= 100) {
     newProgress = 0
-    clearInterval(context.state.interval)
-    context.commit('SET_INTERVAL', null)
+    cancelInterval(context)
   }
   context.commit('SET_CRAFT_PROGRESS', newProgress)
 }

@@ -1,4 +1,4 @@
-import { getters } from '@s/modules/activity.js'
+import getters from '@s/modules/activity/getters.js'
 
 describe('activity getters', () => {
   test('canCraft should return false if cost is not met', () => {

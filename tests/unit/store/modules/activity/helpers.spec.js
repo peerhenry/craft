@@ -3,25 +3,32 @@ import * as helpers from '@s/modules/activity/helpers.js'
 describe('helpers', () => {
   test('cancelInterval should work', () => {
     // arrange
-    const commit = jest.fn()
-    const interval = null
+    const context = {
+      commit: jest.fn(),
+      state: {
+        interval: null,
+      },
+    }
     // act
-    helpers.cancelInterval(commit, interval)
+    helpers.cancelInterval(context)
     // assert
-    expect(commit).toHaveBeenCalledTimes(2)
-    expect(commit).toHaveBeenCalledWith('SET_INTERVAL', null)
-    expect(commit).toHaveBeenCalledWith('SET_CRAFT_PROGRESS', 0)
+    expect(context.commit).toHaveBeenCalledTimes(1)
+    expect(context.commit).toHaveBeenCalledWith('SET_INTERVAL', null)
   })
 
   test('cancelTimeout should work', () => {
     // arrange
-    const commit = jest.fn()
-    const timeout = null
+    const context = {
+      commit: jest.fn(),
+      state: {
+        timeout: null,
+      },
+    }
     // act
-    helpers.cancelTimeout(commit, timeout)
+    helpers.cancelTimeout(context)
     // assert
-    expect(commit).toHaveBeenCalledTimes(1)
-    expect(commit).toHaveBeenCalledWith('SET_TIMEOUT', null)
+    expect(context.commit).toHaveBeenCalledTimes(1)
+    expect(context.commit).toHaveBeenCalledWith('SET_TIMEOUT', null)
   })
 
   function expectAddItem(commit, item, amount) {

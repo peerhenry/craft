@@ -69,4 +69,19 @@ describe('store', () => {
     const result = store.state.inventory.wood
     expect(result).toBe(expected)
   })
+
+  it('dispatch startGathering while crafting should pause crafting', async () => {
+    // Arrange
+    const store = new Vuex.Store(storeConfig)
+    resetStore(store)
+    expect(store.getters['activity/craftingIsPaused']).toBeFalsy() // sanity
+    const initialWood = 500
+    store.state.inventory.wood = initialWood
+    await store.dispatch('activity/enqueueCraft', 'sticks')
+    expect(store.getters['activity/craftingIsPaused']).toBeFalsy() // assert setup
+    // Act
+    await store.dispatch('activity/startGathering', 'wood')
+    // Assert
+    expect(store.getters['activity/craftingIsPaused']).toBe(true)
+  })
 })
