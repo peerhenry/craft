@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Game from '@/views/Game.vue'
+import GatheringPage from '@/pages/GatheringPage.vue'
+import CraftingPage from '@/pages/CraftingPage.vue'
+import ToolsPage from '@/pages/ToolsPage.vue'
 
 Vue.use(Router)
 
@@ -8,8 +10,18 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'game',
-      component: Game,
+      name: 'gathering',
+      component: GatheringPage,
+    },
+    {
+      path: '/crafting',
+      name: 'crafting',
+      component: CraftingPage,
+    },
+    {
+      path: '/tools',
+      name: 'tools',
+      component: ToolsPage,
     },
   ],
 })

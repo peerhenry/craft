@@ -1,6 +1,6 @@
 <template lang="pug">
 .gathering
-  h2.section-header Gathering
+  h2.section-header Gather
   .gather-grid
     .gatherable(v-for="(gatherable, gatherableKey) of gatherables")
       ActionButton.gather-button(@click="startGathering(gatherableKey)") 

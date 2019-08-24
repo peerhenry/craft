@@ -27,8 +27,8 @@ export default {
   font-size: 1.8rem;
   padding: 1em;
   background-color: #eee;
-  border-radius: 5px;
   border: 1px solid #222;
+  border-radius: 5px;
   font-weight: bold;
   box-shadow: 2px 2px 4px rgba(0.2, 0.2, 0.2, 0.5);
 }

@@ -3,17 +3,22 @@
     .topbar
       h1#title C R A F T
       span.version v. 0.0.1
-    .status status: {{ status }}
-    .grid
-      Inventory
-      Gathering
-      Crafting
+    .statusbar status: {{ status }}
+    .navbar
+      span.nav-item
+        router-link(:to="{name: 'gathering'}") Gathering
+      span.nav-item
+        router-link(:to="{name: 'crafting'}") Crafting
+      span.nav-item
+        router-link(:to="{name: 'tools'}") Tools
+    router-view
     ActionButton(style="margin-top: 32px; width: auto" @click="stop") stop current activity
 </template>
 
 <script>
 import Gathering from '@/views/Gathering.vue'
 import Crafting from '@/views/Crafting.vue'
+import CraftingQueue from '@/views/CraftingQueue.vue'
 import Inventory from '@/views/Inventory.vue'
 import ActionButton from '@/components/ActionButton.vue'
 import { createNamespacedHelpers } from 'vuex'
@@ -21,7 +26,7 @@ const { mapGetters, mapActions } = createNamespacedHelpers('activity')
 
 export default {
   name: 'Game',
-  components: { Gathering, Crafting, Inventory, ActionButton },
+  components: { Gathering, Crafting, Inventory, ActionButton, CraftingQueue },
   data() {
     return {
       gatheringResource: null,
@@ -37,12 +42,6 @@ export default {
 </script>
 
 <style lang="scss">
-html {
-  background-color: #7fdbff;
-  background-image: linear-gradient(#7fdbff, darkgreen);
-  height: 100%;
-}
-
 #game {
   font-family: 'Josefin Sans', 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -53,7 +52,7 @@ html {
 }
 
 #title {
-  font-size: 6rem;
+  font-size: 4.8rem;
   font-weight: bold;
   margin: 2rem;
   font-family: 'Amaranth', sans-serif;
@@ -79,8 +78,36 @@ html {
   top: 10px;
 }
 
-.status {
+.statusbar {
   font-size: 1.8rem;
   margin: 2rem 0;
+}
+
+.navbar {
+  display: grid;
+  grid-gap: 2rem;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 50%;
+  margin: auto;
+  margin-bottom: 4rem;
+}
+
+.nav-item a {
+  font-family: 'Amaranth', sans-serif;
+  filter: blur(0.5px);
+  font-size: 3.8rem;
+  text-decoration: none;
+  color: #222;
+  transition: color 0.1s linear;
+
+  &.router-link-exact-active {
+    color: red;
+    filter: blur(1px);
+  }
+
+  &:hover {
+    color: lightgoldenrodyellow;
+    filter: blur(1px);
+  }
 }
 </style>

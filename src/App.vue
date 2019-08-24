@@ -18,5 +18,8 @@ export default {
 
 html {
   font-size: 62.5%; // 10px
+  background-color: #7fdbff;
+  background-image: linear-gradient(#7fdbff, darkgreen);
+  height: 100%;
 }
 </style>

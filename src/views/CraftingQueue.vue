@@ -1,15 +1,16 @@
 <template lang="pug">
 .craft-queueu
   h2.section-header Crafting Queue
-  .queue-item(v-for="(recipeKey, index) of craftQueue")
-    span {{ displayRecipe(recipeKey) }}
-    span.resume-craft(v-show="index === 0 && craftingIsPaused")
-      span.resume-craft-button.tooltip(@click="resumeCraft") ▶
-        span.tooltip-text Resume
-    span.cancel-craft
-      span.cancel-craft-button.tooltip(@click="cancelCraft(index)") ✖
-        span.tooltip-text Cancel
-    ProgressBar.progress-bar(v-if="index === 0" :progress="Math.round(craftProgress)" height="8px")
+  .craft-queueu-grid
+    .queue-item(v-for="(recipeKey, index) of craftQueue")
+      span {{ displayRecipe(recipeKey) }}
+      span.resume-craft(v-show="index === 0 && craftingIsPaused")
+        span.resume-craft-button.tooltip(@click="resumeCraft") ▶
+          span.tooltip-text Resume
+      span.cancel-craft
+        span.cancel-craft-button.tooltip(@click="cancelCraft(index)") ✖
+          span.tooltip-text Cancel
+      ProgressBar.progress-bar(v-if="index === 0" :progress="Math.round(craftProgress)" height="8px")
 </template>
 
 <script>
@@ -38,17 +39,17 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.craft-queueu {
+.craft-queueu-grid {
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 1rem;
 }
 
 .queue-item {
-  padding: 1.2em 0;
-  border: 1px solid #222;
   position: relative;
+  padding: 1.2em 0;
   background-color: #eee;
+  border: 1px solid #222;
   border-radius: 5px;
   font-weight: bold;
   box-shadow: 2px 2px 4px rgba(0.2, 0.2, 0.2, 0.5);

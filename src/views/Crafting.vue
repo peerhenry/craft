@@ -1,6 +1,6 @@
 <template lang="pug">
 .crafting
-  h2.section-header Crafting
+  h2.section-header Craft
   .craft-grid
     div(v-for="(recipe, recipeKey) of recipes")
       ActionButton.craft-button.tooltip(@click="enqueueCraft(recipeKey)" :disabled="!canCraft(recipeKey)") 
@@ -8,7 +8,6 @@
           p(v-for="line of displayCostLines(recipeKey)") {{ line }}
         span {{ displayRecipe(recipeKey) }}
         Spinner.craft-spinner(v-show="isCraftingRecipe(recipeKey)")
-  CraftingQueue
 </template>
 
 <script>
@@ -19,11 +18,10 @@ import ActionButton from '@c/ActionButton.vue'
 const { mapMutations } = createNamespacedHelpers('inventory')
 const { mapActions } = createNamespacedHelpers('activity')
 import recipeDisplay from '@/mixins/recipeDisplay.js'
-import CraftingQueue from '@/views/CraftingQueue.vue'
 
 export default {
   name: 'Crafting',
-  components: { Spinner, ActionButton, CraftingQueue },
+  components: { Spinner, ActionButton },
   mixins: [recipeDisplay],
   computed: {
     ...mapGetters(['recipes']),
