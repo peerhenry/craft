@@ -25,9 +25,14 @@ export default {
   margin-right: 1rem;
   font-family: inherit;
   width: 100%;
+  border: 1px solid #222;
+  box-shadow: 2px 2px 4px rgba(0.2, 0.2, 0.2, 0.5);
+  text-shadow: 2px 2px 4px rgba(0.2, 0.2, 0.2, 0.5);
 
-  &:hover {
-    background-color: #00aac0;
+  &:hover:enabled {
+    // background-color: #00aac0;
+    background-color: #49a14c;
+    opacity: 1;
   }
 
   &:disabled {

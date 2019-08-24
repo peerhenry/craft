@@ -4,6 +4,7 @@ import {
   CRAFTING,
   IDLE,
 } from '@s/modules/activity/activity-types.js'
+import recipes from '@/settings/recipes.js'
 
 const getters = {
   status: state => {
@@ -21,10 +22,10 @@ const getters = {
   craftProgress: state => state.craftProgress,
   craftProgressPercent: state => state.craftProgress,
   canCraft: (_s, _g, rootState) => item => {
-    const recipe = rootState.recipes[item]
+    const recipe = recipes[item]
     if (!recipe) return false
-    for (const [invItem, itemCost] of Object.entries(recipe.cost)) {
-      const hasReq = rootState.inventory[invItem] >= itemCost
+    for (const [itemKey, itemCost] of Object.entries(recipe.cost)) {
+      const hasReq = rootState.inventory[itemKey] >= itemCost
       if (!hasReq) return false
     }
     return true

@@ -3,7 +3,9 @@
   h2.section-header Crafting
   .craft-grid
     div(v-for="(recipe, recipeKey) of recipes")
-      ActionButton.craft-button(@click="enqueueCraft(recipeKey)" :disabled="!canCraft(recipeKey)") 
+      ActionButton.craft-button.tooltip(@click="enqueueCraft(recipeKey)" :disabled="!canCraft(recipeKey)") 
+        span.tooltip-text
+          p(v-for="line of displayCostLines(recipeKey)") {{ line }}
         span {{ displayRecipe(recipeKey) }}
         Spinner.craft-spinner(v-show="isCraftingRecipe(recipeKey)")
   CraftingQueue
@@ -48,5 +50,48 @@ export default {
 .craft-spinner {
   position: absolute;
   right: 1em;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  $tooltip-width: 120px;
+  $tooltip-color: #222;
+  $triangle-size: 5px;
+
+  .tooltip-text {
+    opacity: 1;
+    font-size: 1.4rem;
+    visibility: hidden;
+    position: absolute;
+    z-index: 2;
+    bottom: 110%;
+    left: 50%;
+    width: $tooltip-width;
+    margin-left: -$tooltip-width/2;
+    background-color: $tooltip-color;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+
+    // triangle
+    &:after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -$triangle-size;
+      border-width: $triangle-size;
+      border-style: solid;
+      border-color: $tooltip-color transparent transparent transparent;
+    }
+  }
+
+  &:hover {
+    .tooltip-text {
+      visibility: visible;
+    }
+  }
 }
 </style>

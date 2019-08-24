@@ -28,5 +28,8 @@ export default {
   padding: 1em;
   background-color: #eee;
   border-radius: 5px;
+  border: 1px solid #222;
+  font-weight: bold;
+  box-shadow: 2px 2px 4px rgba(0.2, 0.2, 0.2, 0.5);
 }
 </style>

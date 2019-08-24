@@ -1,27 +1,27 @@
 <template lang="pug">
   #game
     .topbar
-      h1#title CRAFT
+      h1#title C R A F T
       span.version v. 0.0.1
     .status status: {{ status }}
     .grid
       Inventory
       Gathering
       Crafting
-    div(style="margin-top: 32px")
-      button.action-btn(@click="stop") stop current activity
+    ActionButton(style="margin-top: 32px; width: auto" @click="stop") stop current activity
 </template>
 
 <script>
 import Gathering from '@/views/Gathering.vue'
 import Crafting from '@/views/Crafting.vue'
 import Inventory from '@/views/Inventory.vue'
+import ActionButton from '@/components/ActionButton.vue'
 import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('activity')
 
 export default {
   name: 'Game',
-  components: { Gathering, Crafting, Inventory },
+  components: { Gathering, Crafting, Inventory, ActionButton },
   data() {
     return {
       gatheringResource: null,
@@ -37,6 +37,12 @@ export default {
 </script>
 
 <style lang="scss">
+html {
+  background-color: #7fdbff;
+  background-image: linear-gradient(#7fdbff, darkgreen);
+  height: 100%;
+}
+
 #game {
   font-family: 'Josefin Sans', 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -47,33 +53,11 @@ export default {
 }
 
 #title {
-  font-size: 3rem;
+  font-size: 6rem;
   font-weight: bold;
   margin: 2rem;
   font-family: 'Amaranth', sans-serif;
-}
-
-.action-btn {
-  padding: 0.8em;
-  outline: none;
-  border: none;
-  color: white;
-  background-color: #4caf50;
-  cursor: pointer;
-  border-radius: 0.5rem;
-  margin-bottom: 0.5em;
-  font-size: 1.8rem;
-  font-weight: bold;
-  margin-right: 1rem;
-
-  &:hover {
-    opacity: 0.6;
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: default;
-  }
+  filter: blur(1px);
 }
 
 .grid {

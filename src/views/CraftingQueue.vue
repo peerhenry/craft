@@ -46,10 +46,12 @@ export default {
 
 .queue-item {
   padding: 1.2em 0;
-  border: 1px solid grey;
+  border: 1px solid #222;
   position: relative;
   background-color: #eee;
   border-radius: 5px;
+  font-weight: bold;
+  box-shadow: 2px 2px 4px rgba(0.2, 0.2, 0.2, 0.5);
 
   .progress-bar {
     height: 8px;

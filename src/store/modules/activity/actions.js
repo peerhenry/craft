@@ -55,6 +55,7 @@ const actions = {
     if (index === 0) {
       context.dispatch('craftNextInQueue')
     }
+    helpers.clearTimeoutAndInterval(context)
   },
   resumeCraft: ctx => {
     if (ctx.state.craftQueue.length === 0) {

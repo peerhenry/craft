@@ -10,6 +10,12 @@ const recipeDisplay = {
       const name = keyToDisplayName(recipe.itemKey)
       return `${item.icon} ${name}`
     },
+    displayCostLines(key) {
+      const recipe = recipes[key]
+      return Object.entries(recipe.cost).map(
+        ([key, val]) => `${keyToDisplayName(key)} (${val})`
+      )
+    },
   },
 }
 
