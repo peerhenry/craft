@@ -3,8 +3,12 @@
   h2.section-header Crafting Queue
   .queue-item(v-for="(recipeKey, index) of craftQueue")
     span {{ displayRecipe(recipeKey) }}
-    span.resume-craft(v-show="index === 0 && craftingIsPaused" @click="resumeCraft") ▶
-    span.cancel-craft(@click="cancelCraft(index)") ✖
+    span.resume-craft(v-show="index === 0 && craftingIsPaused")
+      span.resume-craft-button.tooltip(@click="resumeCraft") ▶
+        span.tooltip-text Resume
+    span.cancel-craft
+      span.cancel-craft-button.tooltip(@click="cancelCraft(index)") ✖
+        span.tooltip-text Cancel
     ProgressBar.progress-bar(v-if="index === 0" :progress="Math.round(craftProgress)" height="8px")
 </template>
 
@@ -56,17 +60,24 @@ export default {
     border-top: 1px solid lightgray;
   }
 
-  $size: 1em;
-  $padding: 0.3em;
+  $button-size: 1em;
+  $button-padding: 0.3em;
+
   .resume-craft,
   .cancel-craft {
-    padding: $padding;
     position: absolute;
     top: 50%;
     z-index: 1;
-    margin-top: -($size)/2 - $padding;
-    width: $size;
-    height: $size;
+    margin-top: -($button-size)/2 - $button-padding;
+  }
+
+  .resume-craft-button,
+  .cancel-craft-button {
+    position: relative;
+    display: inline-block;
+    padding: $button-padding;
+    width: $button-size;
+    height: $button-size;
     cursor: pointer;
     border-radius: 3px;
     border: 1px solid darkgray;
@@ -78,11 +89,52 @@ export default {
   }
 
   .cancel-craft {
-    right: $size;
+    right: $button-size;
   }
 
   .resume-craft {
-    right: 3 * $size;
+    right: 3 * $button-size;
+  }
+
+  .tooltip {
+    position: relative;
+    display: inline-block;
+    $tooltip-width: 120px;
+    $tooltip-color: #222;
+    $triangle-size: 5px;
+
+    .tooltip-text {
+      visibility: hidden;
+      position: absolute;
+      z-index: 2;
+      bottom: 130%;
+      left: 50%;
+      width: $tooltip-width;
+      margin-left: -$tooltip-width/2;
+      background-color: $tooltip-color;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+
+      // triangle
+      &:after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -$triangle-size;
+        border-width: $triangle-size;
+        border-style: solid;
+        border-color: $tooltip-color transparent transparent transparent;
+      }
+    }
+
+    &:hover {
+      .tooltip-text {
+        visibility: visible;
+      }
+    }
   }
 }
 </style>
