@@ -63,6 +63,7 @@ export default {
     border-top: 1px solid lightgray;
   }
 
+  // todo: remove duplicate code with Inventory
   $button-size: 1em;
   $button-padding: 0.3em;
 
@@ -72,6 +73,14 @@ export default {
     top: 50%;
     z-index: 1;
     margin-top: -($button-size)/2 - $button-padding;
+  }
+
+  .cancel-craft {
+    right: $button-size;
+  }
+
+  .resume-craft {
+    right: 3 * $button-size;
   }
 
   .resume-craft-button,
@@ -89,14 +98,6 @@ export default {
     &:hover {
       background-color: white;
     }
-  }
-
-  .cancel-craft {
-    right: $button-size;
-  }
-
-  .resume-craft {
-    right: 3 * $button-size;
   }
 
   .tooltip {

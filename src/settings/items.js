@@ -16,11 +16,15 @@ const items = {
 
   fruit: {
     icon: '🍒',
-    consumable: true,
+    consumable: {
+      nourishment: 10,
+    },
   },
   vegetables: {
     icon: '🥕',
-    consumable: true,
+    consumable: {
+      nourishment: 20,
+    },
   },
 
   // TOOLS
