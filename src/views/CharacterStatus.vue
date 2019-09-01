@@ -1,6 +1,7 @@
 <template lang="pug">
 .character-status
-  span nourishment: {{ nourishmentHearts }}
+  .stats
+    span {{ nourishmentHearts }}
   span status: {{ status }}
 </template>
 
@@ -31,5 +32,10 @@ export default {
 .character-status {
   font-size: 1.8rem;
   margin: 2rem 0;
+  .stats {
+    position: absolute;
+    bottom: 1em;
+    left: 1em;
+  }
 }
 </style>
