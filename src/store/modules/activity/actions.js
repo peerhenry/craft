@@ -58,6 +58,7 @@ const actions = {
     helpers.clearTimeoutAndInterval(context)
   },
   resumeCraft: ctx => {
+    ctx.dispatch('stop')
     if (ctx.state.craftQueue.length === 0) {
       return
     }

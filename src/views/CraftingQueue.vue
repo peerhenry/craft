@@ -1,15 +1,16 @@
 <template lang="pug">
 .craft-queueu
   h2.section-header Crafting Queue
-  .queue-item(v-for="(recipeKey, index) of craftQueue")
-    span {{ displayRecipe(recipeKey) }}
-    span.resume-craft(v-show="index === 0 && craftingIsPaused")
-      span.resume-craft-button.tooltip(@click="resumeCraft") ▶
-        span.tooltip-text Resume
-    span.cancel-craft
-      span.cancel-craft-button.tooltip(@click="cancelCraft(index)") ✖
-        span.tooltip-text Cancel
-    ProgressBar.progress-bar(v-if="index === 0" :progress="Math.round(craftProgress)" height="8px")
+  .craft-queueu-grid
+    .queue-item(v-for="(recipeKey, index) of craftQueue")
+      span {{ displayRecipe(recipeKey) }}
+      span.resume-craft(v-show="index === 0 && craftingIsPaused")
+        span.resume-craft-button.tooltip(@click="resumeCraft") ▶
+          span.tooltip-text Resume
+      span.cancel-craft
+        span.cancel-craft-button.tooltip(@click="cancelCraft(index)") ✖
+          span.tooltip-text Cancel
+      ProgressBar.progress-bar(v-if="index === 0" :progress="Math.round(craftProgress)" height="8px")
 </template>
 
 <script>
@@ -38,7 +39,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.craft-queueu {
+.craft-queueu-grid {
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 1rem;

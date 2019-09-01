@@ -8,12 +8,14 @@
       Inventory
       Gathering
       Crafting
+      CraftingQueue
     ActionButton(style="margin-top: 32px; width: auto" @click="stop") stop current activity
 </template>
 
 <script>
 import Gathering from '@/views/Gathering.vue'
 import Crafting from '@/views/Crafting.vue'
+import CraftingQueue from '@/views/CraftingQueue.vue'
 import Inventory from '@/views/Inventory.vue'
 import ActionButton from '@/components/ActionButton.vue'
 import { createNamespacedHelpers } from 'vuex'
@@ -21,7 +23,7 @@ const { mapGetters, mapActions } = createNamespacedHelpers('activity')
 
 export default {
   name: 'Game',
-  components: { Gathering, Crafting, Inventory, ActionButton },
+  components: { Gathering, Crafting, Inventory, CraftingQueue, ActionButton },
   data() {
     return {
       gatheringResource: null,
@@ -50,6 +52,7 @@ html {
   text-align: center;
   color: #2c3e50;
   font-size: 1.4rem;
+  padding: 0 2em;
 }
 
 #title {
@@ -62,9 +65,9 @@ html {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-gap: 1rem;
-  width: 50%;
+  width: 100%;
   margin: auto;
 }
 

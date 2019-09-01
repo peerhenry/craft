@@ -16,9 +16,11 @@ const items = {
 
   fruit: {
     icon: '🍒',
+    consumable: true,
   },
   vegetables: {
     icon: '🥕',
+    consumable: true,
   },
 
   // TOOLS

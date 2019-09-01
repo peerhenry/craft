@@ -8,7 +8,6 @@
           p(v-for="line of displayCostLines(recipeKey)") {{ line }}
         span {{ displayRecipe(recipeKey) }}
         Spinner.craft-spinner(v-show="isCraftingRecipe(recipeKey)")
-  CraftingQueue
 </template>
 
 <script>
