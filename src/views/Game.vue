@@ -3,7 +3,7 @@
     .topbar
       h1#title C R A F T
       span.version v. 0.0.1
-    .status status: {{ status }}
+    CharacterStatus
     .grid
       Inventory
       Gathering
@@ -13,17 +13,25 @@
 </template>
 
 <script>
+import CharacterStatus from '@/views/CharacterStatus.vue'
 import Gathering from '@/views/Gathering.vue'
 import Crafting from '@/views/Crafting.vue'
 import CraftingQueue from '@/views/CraftingQueue.vue'
 import Inventory from '@/views/Inventory.vue'
 import ActionButton from '@/components/ActionButton.vue'
 import { createNamespacedHelpers } from 'vuex'
-const { mapGetters, mapActions } = createNamespacedHelpers('activity')
+const { mapActions } = createNamespacedHelpers('activity')
 
 export default {
   name: 'Game',
-  components: { Gathering, Crafting, Inventory, CraftingQueue, ActionButton },
+  components: {
+    CharacterStatus,
+    Gathering,
+    Crafting,
+    Inventory,
+    CraftingQueue,
+    ActionButton,
+  },
   data() {
     return {
       gatheringResource: null,
@@ -33,7 +41,6 @@ export default {
       currentInterval: null,
     }
   },
-  computed: mapGetters(['status']),
   methods: mapActions(['stop']),
 }
 </script>
@@ -80,10 +87,5 @@ html {
   position: absolute;
   right: 10px;
   top: 10px;
-}
-
-.status {
-  font-size: 1.8rem;
-  margin: 2rem 0;
 }
 </style>
