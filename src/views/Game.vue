@@ -47,9 +47,11 @@ export default {
 
 <style lang="scss">
 html {
+  height: 100%;
   background-color: #7fdbff;
   background-image: linear-gradient(#7fdbff, darkgreen);
-  height: 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 #game {
