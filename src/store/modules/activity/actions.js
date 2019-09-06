@@ -54,8 +54,8 @@ const actions = {
     context.commit('QUEUE_REMOVE_CRAFT', index)
     if (index === 0) {
       context.dispatch('craftNextInQueue')
+      helpers.clearTimeoutAndInterval(context)
     }
-    helpers.clearTimeoutAndInterval(context)
   },
   resumeCraft: ctx => {
     ctx.dispatch('stop')

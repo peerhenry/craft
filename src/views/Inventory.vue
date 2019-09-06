@@ -5,7 +5,7 @@
     .inventory-item(v-for="(value, itemKey) in inventory")
       span {{ displayItem(itemKey) }}: {{ value }}
       span.consume(v-show="isConsumable(itemKey)")
-        span.consume-button.tooltip(@click="consume(itemKey)") 🍽
+        span.consume-button.tooltip(@click="consume(itemKey)" style="border: none") 👄
           span.tooltip-text Consume
 </template>
 
@@ -23,6 +23,7 @@ export default {
     },
     consume(itemKey) {
       const nourishment = items[itemKey].consumable.nourishment
+      this.$store.commit('inventory/ADD_ITEM', { item: itemKey, amount: -1 })
       if (nourishment) {
         this.$store.commit('character/ADD_NOURISHMENT', nourishment)
       }
@@ -71,6 +72,10 @@ export default {
     border-radius: 3px;
     border: 1px solid darkgray;
     font-family: arial;
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
 
     &:hover {
       background-color: white;

@@ -84,4 +84,23 @@ describe('store', () => {
     // Assert
     expect(store.getters['activity/craftingIsPaused']).toBe(true)
   })
+
+  it('cancelCraft on later item should not influence craft in progress', async () => {
+    // Arrange
+    const store = new Vuex.Store(storeConfig)
+    resetStore(store)
+    expect(store.getters['activity/craftingIsPaused']).toBeFalsy() // sanity
+    const initialWood = 500
+    store.state.inventory.wood = initialWood
+    await store.dispatch('activity/enqueueCraft', 'sticks')
+    await store.dispatch('activity/enqueueCraft', 'sticks')
+    expect(store.getters['activity/craftingIsPaused']).toBeFalsy() // assert setup
+    // Act
+    await store.dispatch('activity/cancelCraft', 1)
+    // Assert
+    expect(store.getters['activity/craftingIsPaused']).toBe(false)
+    expect(store.getters['activity/isCraftingRecipe']('sticks')).toBe(true)
+    expect(store.state.activity.interval).not.toBe(null)
+    expect(store.state.activity.timeout).not.toBe(null)
+  })
 })

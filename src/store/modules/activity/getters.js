@@ -21,8 +21,8 @@ const getters = {
   gatherTimeMs: () => item => gatherables[item].durationSeconds * 1000,
   craftProgress: state => state.craftProgress,
   craftProgressPercent: state => state.craftProgress,
-  canCraft: (_s, _g, rootState) => item => {
-    const recipe = recipes[item]
+  canCraft: (_s, _g, rootState) => key => {
+    const recipe = recipes[key]
     if (!recipe) return false
     for (const [itemKey, itemCost] of Object.entries(recipe.cost)) {
       const hasReq = rootState.inventory[itemKey] >= itemCost
