@@ -101,34 +101,16 @@ describe('helpers', () => {
       commit: jest.fn(),
       dispatch: jest.fn(),
     }
-    // act
-    helpers.finishCraft(context, item, amount)
-    // assert
-    expect(context.dispatch).toHaveBeenCalledWith('craftNextInQueue')
-    expect(context.commit).toHaveBeenCalledTimes(3)
-    expect(context.commit).toHaveBeenCalledWith('DEQUEUE_CRAFT')
-    expectAddItem(context.commit, item, amount)
-  })
-
-  test('gatherItem works and sets new timeout', () => {
-    // arrange
-    const item = 'wood'
-    const amount = 35
-    const context = {
-      commit: jest.fn(),
-      getters: {
-        gatherTimeMs: jest.fn(),
-      },
+    const recipe = {
+      itemKey: item,
+      amount,
+      effect: {},
     }
     // act
-    helpers.gatherItem(context, item, amount)
+    helpers.finishCraft(context, recipe)
     // assert
-    expect(context.commit).toHaveBeenCalledTimes(2)
+    expect(context.dispatch).toHaveBeenCalledWith('craftNextInQueue')
+    expect(context.commit).toHaveBeenCalledWith('DEQUEUE_CRAFT')
     expectAddItem(context.commit, item, amount)
-    expect(context.commit).toHaveBeenCalledWith(
-      'SET_TIMEOUT',
-      expect.anything()
-    )
-    expect(context.getters.gatherTimeMs).toHaveBeenCalledWith(item)
   })
 })

@@ -42,16 +42,20 @@ export const setCraftTimeout = (context, payload) => {
   context.commit(
     'SET_TIMEOUT',
     setTimeout(
-      () => finishCraft(context, payload.recipe.itemKey, payload.recipe.amount),
+      () => finishCraft(context, payload.recipe, payload.recipe.amount),
       payload.timeMs
     )
   )
 }
 
-export const finishCraft = (context, itemKey, amount) => {
+export const finishCraft = (context, recipe) => {
+  addItem(context.commit, recipe.itemKey, recipe.amount)
+  context.commit('character/ADD_NOURISHMENT', recipe.effect.nourishment, {
+    root: true,
+  })
+  context.commit('character/ADD_XP', recipe.effect.xp, { root: true })
   context.commit('DEQUEUE_CRAFT')
   context.commit('SET_IDLE')
-  addItem(context.commit, itemKey, amount)
   context.dispatch('craftNextInQueue')
 }
 
@@ -72,15 +76,23 @@ export const updateCraftingProgress = (context, percentChange) => {
   context.commit('SET_CRAFT_PROGRESS', newProgress)
 }
 
-export const setGatherTimeout = (context, item, amount) => {
-  const gather = () => gatherItem(context, item, amount)
-  const timeout = setTimeout(gather, context.getters.gatherTimeMs(item))
+export const setGatherTimeout = (context, gatherable) => {
+  // item, amount
+  const gather = () => {
+    gatherItem(context, gatherable)
+  }
+  const timeout = setTimeout(gather, gatherable.durationSeconds * 1000)
   context.commit('SET_TIMEOUT', timeout)
 }
 
-export const gatherItem = (context, item, amount) => {
-  addItem(context.commit, item, amount)
-  setGatherTimeout(context, item, amount)
+export const gatherItem = (context, gatherable) => {
+  addItem(context.commit, gatherable.itemKey, gatherable.amount)
+  context.commit('character/ADD_NOURISHMENT', gatherable.effect.nourishment, {
+    root: true,
+  })
+  context.commit('character/ADD_XP', gatherable.effect.xp, { root: true })
+  // start new gather
+  setGatherTimeout(context, gatherable)
 }
 
 export const addItem = (commit, item, amount) => {

@@ -37,11 +37,8 @@ const actions = {
       type: GATHERING,
       subject: gatherableKey,
     })
-    helpers.setGatherTimeout(
-      context,
-      gatherableKey,
-      gatherables[gatherableKey].amount
-    )
+    const gatherable = gatherables[gatherableKey]
+    helpers.setGatherTimeout(context, gatherable)
   },
   stop: context => {
     context.commit('SET_IDLE')

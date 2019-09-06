@@ -6,6 +6,10 @@ const recipes = {
     },
     craftDurationSeconds: 2,
     amount: 2,
+    effect: {
+      nourishment: -2,
+      xp: 1,
+    },
   },
   planks: {
     itemKey: 'planks',
@@ -14,6 +18,10 @@ const recipes = {
     },
     craftDurationSeconds: 2,
     amount: 1,
+    effect: {
+      nourishment: -5,
+      xp: 1,
+    },
   },
   sharp_stone: {
     itemKey: 'sharp_stone',
@@ -22,6 +30,10 @@ const recipes = {
     },
     craftDurationSeconds: 4,
     amount: 1,
+    effect: {
+      nourishment: -2,
+      xp: 1,
+    },
   },
   stone_axe: {
     itemKey: 'stone_axe',
@@ -31,6 +43,10 @@ const recipes = {
     },
     craftDurationSeconds: 4,
     amount: 1,
+    effect: {
+      nourishment: -5,
+      xp: 4,
+    },
   },
   stone_pickaxe: {
     itemKey: 'stone_pickaxe',
@@ -41,6 +57,10 @@ const recipes = {
     },
     craftDurationSeconds: 4,
     amount: 1,
+    effect: {
+      nourishment: -5,
+      xp: 4,
+    },
   },
 }
 

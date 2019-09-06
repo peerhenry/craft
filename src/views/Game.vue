@@ -61,7 +61,7 @@ html {
   text-align: center;
   color: #2c3e50;
   font-size: 1.4rem;
-  padding: 0 2em;
+  padding: 0 4em;
 }
 
 #title {
